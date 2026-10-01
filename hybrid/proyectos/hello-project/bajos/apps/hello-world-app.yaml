@@ -13,7 +13,7 @@ items:
       server: https://kubernetes.default.svc
     project: hello-project-bajos-hybrid
     source:
-      path: manifests/hello-world/overlays/bajos
+      path: manifests/hello-world/overlays/bajos/hybrid
       repoURL: https://github.com/rofrba/argo-multicluster.git
       targetRevision: main
     syncPolicy:
