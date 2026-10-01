@@ -13,7 +13,7 @@ items:
       server: https://kubernetes.default.svc
     project: prod-example-pull
     source:
-      path: manifests/hello-world/overlays/pull/prod
+      path: manifests/hello-world/overlays/prod/pull
       repoURL: https://github.com/rofrba/argo-multicluster.git
       targetRevision: main
     syncPolicy:
