@@ -20,20 +20,17 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
-            # 1. Reemplazamos la marca de agua 'VALUE_MI_ENTORNO' por la variable $MI_ENTORNO
             sed "s|VALUE_MI_ENTORNO|${MI_ENTORNO}|g" /tmp/template/index.html.template > /var/www/html/index.html && \
-            # 2. Ejecutamos el punto de entrada oficial de la imagen Red Hat
             exec container-entrypoint run-httpd
         ports:
         - containerPort: 8080
           name: http
         volumeMounts:
-        - name: html-volume
-          mountPath: /var/www/html/index.html
-          subPath: index.html
+        - name: html-template-volume
+          mountPath: /tmp/template
         # En OpenShift es una buena práctica (o requerimiento de SCC) ejecutar en puertos superiores al 1024
         # y configurar el puerto predeterminado de NGINX
       volumes:
-      - name: html-volume
+      - name: html-template-volume
         configMap:
           name: html-template
