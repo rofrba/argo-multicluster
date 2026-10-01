@@ -10,7 +10,7 @@ spec:
     namespace: 'openshift-gitops'
     server: 'https://kubernetes.default.svc'
   source:
-    path: 'push/bajos/proyectos/openshift-gitops'
+    path: 'push/proyectos/openshift-gitops'
     repoURL: 'https://github.com/rofrba/argo-multicluster.git'
     targetRevision: main
   project: 'openshift-gitops-push'
