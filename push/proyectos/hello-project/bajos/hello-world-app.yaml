@@ -9,7 +9,7 @@ items:
       argocd.argoproj.io/sync-wave: "1" 
   spec:
     destination:
-      namespace: hello-project-bajos-push
+      namespace: dev-example-push
       server: https://kubernetes.default.svc
     project: hello-project-bajos-push
     source:

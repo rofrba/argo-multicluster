@@ -9,11 +9,11 @@ items:
       argocd.argoproj.io/sync-wave: "1" 
   spec:
     destination:
-      namespace: hello-project-prod-push
+      namespace: prod-example-push
       server: https://kubernetes.default.svc
     project: hello-project-prod-push
     source:
-      path: manifests/hello-world/overlays/prod
+      path: manifests/hello-world/overlays/prod/push
       repoURL: https://github.com/rofrba/argo-multicluster.git
       targetRevision: main
     syncPolicy:
