@@ -7,7 +7,7 @@ spec:
   template:
     spec:
       containers:
-      - name: hello-world
+      - name: web
         image: registry.redhat.io/rhel10/httpd-24:1790750455
         env:
         - name: MI_ENTORNO
