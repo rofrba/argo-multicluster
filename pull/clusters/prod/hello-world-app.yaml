@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world-pull
+  namespace: openshift-gitops
+  labels:
+    kcd.demo/model: pull
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: hello-world-pull
+  source:
+    repoURL: https://github.com/rofrba/argo-multicluster.git
+    targetRevision: kcd-argentina
+    # Kustomize: base + envs/prod + components/pull
+    path: manifests/hello-world/deploy/pull/prod
+  destination:
+    # El Argo CD LOCAL del spoke se "tira" sus propios cambios desde Git
+    server: https://kubernetes.default.svc
+    namespace: kcd-pull-prod
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+    - CreateNamespace=true

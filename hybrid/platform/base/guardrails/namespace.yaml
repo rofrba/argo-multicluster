@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: team-namespace   # lo renombra el overlay
+  labels:
+    # OpenShift GitOps le da permisos al Argo CD LOCAL del spoke sobre este namespace
+    argocd.argoproj.io/managed-by: openshift-gitops
+    kcd.demo/model: hybrid

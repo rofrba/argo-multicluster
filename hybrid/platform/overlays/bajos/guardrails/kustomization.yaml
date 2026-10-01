@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: kcd-hybrid-bajos
+
+components:
+- ../../../base/guardrails
+
+patches:
+- target:
+    kind: Namespace
+    name: team-namespace
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: kcd-hybrid-bajos
+- target:
+    kind: ResourceQuota
+    name: team-quota
+  patch: |-
+    - op: replace
+      path: /spec/hard
+      value:
+        pods: "4"
+        requests.cpu: 200m
+        requests.memory: 512Mi
+        limits.cpu: "1"
+        limits.memory: 1Gi

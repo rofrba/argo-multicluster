@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Se aplica UNA vez, a mano, en el HUB:  oc apply -k push/bootstrap
+# A partir de acá todo lo maneja Argo CD desde Git (app-of-apps).
+namespace: openshift-gitops
+
+resources:
+- appproject.yaml
+- repository.yaml
+- root-app.yaml

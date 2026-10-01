@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: hello-world-hybrid
+  namespace: openshift-gitops
+spec:
+  description: >-
+    HYBRID - Execution plane. El equipo despliega lo que quiera en SU namespace,
+    pero no puede tocar los guardrails que puso plataforma.
+  sourceRepos:
+  - https://github.com/rofrba/argo-multicluster.git
+  destinations:
+  - namespace: team-namespace   # lo cambia el overlay
+    server: https://kubernetes.default.svc
+  # Sin clusterResourceWhitelist: el namespace lo crea el hub, no el equipo
+  namespaceResourceBlacklist:
+  - group: ""
+    kind: ResourceQuota
+  - group: ""
+    kind: LimitRange
+  - group: networking.k8s.io
+    kind: NetworkPolicy

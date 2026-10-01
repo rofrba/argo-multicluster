@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hybrid-root
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: hybrid-bootstrap
+  source:
+    repoURL: https://github.com/rofrba/argo-multicluster.git
+    targetRevision: kcd-argentina
+    path: hybrid/hub
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openshift-gitops
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

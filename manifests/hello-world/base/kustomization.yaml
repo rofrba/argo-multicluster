@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Base única: la misma app para los 3 modelos (push / pull / hybrid).
+# Lo que cambia por entorno vive en envs/, lo que cambia por modelo en components/.
+labels:
+- pairs:
+    app.kubernetes.io/name: hello-world
+    app.kubernetes.io/part-of: argo-multicluster
+  includeSelectors: true
+
+resources:
+- deployment.yaml
+- service.yaml
+- route.yaml
+
+# El HTML se genera como ConfigMap con hash en el nombre:
+# si cambia el template, cambia el hash y el Deployment hace rollout solo.
+configMapGenerator:
+- name: html-template
+  files:
+  - index.html
+
+# Valores por defecto; envs/ y components/ los pisan con behavior: merge
+- name: app-config
+  literals:
+  - MI_ENTORNO=sin-entorno
+  - MI_MODELO=sin-modelo
+  - MI_COLOR=#64748b

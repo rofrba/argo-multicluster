@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: push-workloads
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  description: "PUSH - el hub despliega workloads DIRECTO contra la API de cada spoke"
+  sourceRepos:
+  - https://github.com/rofrba/argo-multicluster.git
+  # Cualquier cluster registrado en el hub, pero sólo en los namespaces del demo push
+  destinations:
+  - namespace: 'kcd-push-*'
+    server: '*'
+  clusterResourceWhitelist:
+  - group: ''
+    kind: Namespace

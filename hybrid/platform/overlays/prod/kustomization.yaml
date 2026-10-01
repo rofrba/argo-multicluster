@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Plataforma del cluster "prod" - la sincroniza el HUB (ApplicationSet platform-hybrid)
+resources:
+- guardrails          # namespace kcd-hybrid-prod + cuota/limits/red de prod
+
+components:
+- ../../base/gitops   # AppProjects + root app del Argo CD local (en openshift-gitops)
+
+patches:
+- target:
+    kind: AppProject
+    name: hello-world-hybrid
+  patch: |-
+    - op: replace
+      path: /spec/destinations/0/namespace
+      value: kcd-hybrid-prod
+- target:
+    kind: Application
+    name: hybrid-apps
+  patch: |-
+    - op: replace
+      path: /spec/source/path
+      value: hybrid/clusters/prod/apps

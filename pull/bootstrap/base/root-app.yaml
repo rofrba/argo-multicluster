@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pull-root
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: pull-bootstrap
+  source:
+    repoURL: https://github.com/rofrba/argo-multicluster.git
+    targetRevision: kcd-argentina
+    path: pull/clusters/CHANGEME   # lo completa el overlay de cada spoke
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openshift-gitops
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

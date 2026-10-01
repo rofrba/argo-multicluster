@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: push-bootstrap
+spec:
+  description: "PUSH - raíz en el hub: sólo puede crear objetos de Argo CD en el hub"
+  sourceRepos:
+  - https://github.com/rofrba/argo-multicluster.git
+  destinations:
+  - namespace: openshift-gitops
+    server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+  - group: argoproj.io
+    kind: AppProject
+  - group: argoproj.io
+    kind: ApplicationSet
+  - group: argoproj.io
+    kind: Application

@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: hello-world-push
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  # Agregar un cluster = commitear un cluster-config.json (y registrarlo en el hub)
+  - git:
+      repoURL: https://github.com/rofrba/argo-multicluster.git
+      revision: kcd-argentina
+      files:
+      - path: push/clusters/*/cluster-config.json
+  template:
+    metadata:
+      name: 'hello-world-push-{{.path.basename}}'
+      labels:
+        kcd.demo/model: push
+    spec:
+      project: push-workloads
+      source:
+        repoURL: https://github.com/rofrba/argo-multicluster.git
+        targetRevision: kcd-argentina
+        # Kustomize: base + envs/<entorno> + components/push
+        path: 'manifests/hello-world/deploy/push/{{.path.basename}}'
+      destination:
+        # El HUB aplica los objetos en la API REMOTA del spoke.
+        # El spoke no necesita Argo CD: sólo recibe Deployments, Services, Routes.
+        name: '{{.name}}'
+        namespace: '{{.namespace}}'
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
+        syncOptions:
+        - CreateNamespace=true

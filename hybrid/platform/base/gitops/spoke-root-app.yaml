@@ -1,0 +1,22 @@
+# Este objeto lo EMPUJA el hub, pero lo EJECUTA el Argo CD local del spoke.
+# Es la "bisagra" entre los dos planos.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hybrid-apps
+  namespace: openshift-gitops
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: hybrid-spoke-root
+  source:
+    repoURL: https://github.com/rofrba/argo-multicluster.git
+    targetRevision: kcd-argentina
+    path: hybrid/clusters/CHANGEME/apps   # lo completa el overlay
+  destination:
+    server: https://kubernetes.default.svc   # in-cluster: el spoke se sincroniza solo
+    namespace: openshift-gitops
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
