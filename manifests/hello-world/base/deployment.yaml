@@ -28,9 +28,13 @@ spec:
         volumeMounts:
         - name: html-template-volume
           mountPath: /tmp/template
+        - name: www-html-volume
+          mountPath: /var/www/html
         # En OpenShift es una buena práctica (o requerimiento de SCC) ejecutar en puertos superiores al 1024
         # y configurar el puerto predeterminado de NGINX
       volumes:
       - name: html-template-volume
         configMap:
           name: html-template
+      - name: www-html-volume
+        emptyDir: {}
