@@ -15,7 +15,7 @@ spec:
         app: hello-world
     spec:
       containers:
-      - name: web
+      - name: hello-world
         image: registry.redhat.io/rhel10/httpd-24:1790750455
         ports:
         - containerPort: 8080
