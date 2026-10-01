@@ -3,15 +3,15 @@ items:
 - apiVersion: argoproj.io/v1alpha1
   kind: Application
   metadata:
-    name: prod-hello-service-app
+    name: prod-hello-service-app-pull
     namespace: openshift-gitops 
     annotations:
       argocd.argoproj.io/sync-wave: "1" 
   spec:
     destination:
-      namespace: prod-example
+      namespace: prod-example-pull
       server: https://kubernetes.default.svc
-    project: prod-example
+    project: prod-example-pull
     source:
       path: manifests/hello-world/overlays/prod
       repoURL: https://github.com/rofrba/argo-multicluster.git

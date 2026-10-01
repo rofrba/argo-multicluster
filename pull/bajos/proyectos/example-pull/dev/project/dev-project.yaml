@@ -3,13 +3,13 @@ items:
 - apiVersion: v1
   kind: Namespace
   metadata:
-    name: dev-example
+    name: dev-example-pull
 - apiVersion: argoproj.io/v1alpha1
   kind: AppProject
   metadata:
     finalizers:
     - resources-finalizer.argocd.argoproj.io
-    name: dev-example
+    name: dev-example-pull
     namespace: openshift-gitops
   spec:
     clusterResourceWhitelist:
@@ -24,7 +24,7 @@ items:
     - group: '*'
       kind: ServiceAccount
     destinations:
-    - namespace: dev-example
+    - namespace: dev-example-pull
       server: https://kubernetes.default.svc
     namespaceResourceBlacklist:
     - group: ""

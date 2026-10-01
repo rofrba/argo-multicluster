@@ -5,7 +5,7 @@ items:
   metadata:
     finalizers:
     - resources-finalizer.argocd.argoproj.io
-    name: example 
+    name: example-pull
     annotations:
       argocd.argoproj.io/sync-wave: "1" 
   spec:
@@ -29,7 +29,7 @@ items:
     destinations:
     - namespace: openshift-gitops
       server: https://kubernetes.default.svc
-    - namespace: prod-example
+    - namespace: prod-example-pull
       server: https://kubernetes.default.svc
     namespaceResourceBlacklist:
     - group: ""
@@ -43,7 +43,8 @@ items:
 - apiVersion: argoproj.io/v1alpha1
   kind: ApplicationSet
   metadata:
-    name: example-set 
+    name: example-set-pull
+    namespace: openshift-gitops
     annotations:
       argocd.argoproj.io/sync-wave: "1" 
   spec:
@@ -51,7 +52,7 @@ items:
     - list:
         elements:
         - env: prod
-          project: example
+          project: example-pull
     template:
       metadata:
         finalizers:
