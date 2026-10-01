@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: appset-hello-project
+  name: appset-hello-project-hybrid
   namespace: openshift-gitops
 spec:
   generators:
@@ -13,7 +13,7 @@ spec:
   
   template:
     metadata:
-      name: '{{path.basename}}-hello-project'
+      name: '{{path.basename}}-hello-project-hybrid'
     spec:
       project: multi-cluster
       

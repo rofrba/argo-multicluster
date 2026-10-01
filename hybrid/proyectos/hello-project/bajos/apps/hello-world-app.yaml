@@ -9,9 +9,9 @@ items:
       argocd.argoproj.io/sync-wave: "1" 
   spec:
     destination:
-      namespace: hello-project-bajos
+      namespace: dev-example-hybrid
       server: https://kubernetes.default.svc
-    project: hello-project-bajos
+    project: hello-project-bajos-hybrid
     source:
       path: manifests/hello-world/overlays/bajos
       repoURL: https://github.com/rofrba/argo-multicluster.git

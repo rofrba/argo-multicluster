@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prod-hello-project-app
+  name: prod-hello-project-app-hybrid
   namespace: openshift-gitops
 spec:
   project: default 

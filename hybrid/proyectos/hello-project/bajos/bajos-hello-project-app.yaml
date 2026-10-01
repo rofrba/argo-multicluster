@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bajos-hello-project-app
+  name: bajos-hello-project-app-hybrid
   namespace: openshift-gitops
 spec:
   project: default 
