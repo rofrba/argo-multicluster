@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-world
+  name: hello-world-pull
 spec:
   replicas: 1
   template:
     spec:
       containers:
-      - name: hello-world
+      - name: hello-world-pull
         image: registry.redhat.io/rhel10/httpd-24:1790750455
         env:
         - name: MI_ENTORNO

@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-world
+  name: hello-world-pull
   labels:
-    app: hello-world
+    app: hello-world-pull
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hello-world
+      app: hello-world-pull
   template:
     metadata:
       labels:
-        app: hello-world
+        app: hello-world-pull
     spec:
       containers:
-      - name: hello-world
+      - name: hello-world-pull
         image: registry.redhat.io/rhel10/httpd-24:1790750455
         command: ["/bin/sh", "-c"]
         args:
@@ -35,6 +35,6 @@ spec:
       volumes:
       - name: html-template-volume
         configMap:
-          name: html-template
+          name: html-template-pull
       - name: www-html-volume
         emptyDir: {}
