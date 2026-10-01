@@ -26,9 +26,102 @@ La página muestra el modelo (color) y el entorno, así se ve en vivo quién des
 └── hybrid/                     # hub = management plane, spokes = execution plane
 ```
 
-Clusters: `bajos` (dev) y `prod` como spokes, más un **hub** con OpenShift GitOps
-para push e hybrid. Los spokes deben estar registrados en el hub con esos nombres
-(`argocd cluster add` o Secret `argocd.argoproj.io/secret-type: cluster`).
+---
+
+## Cómo levantarlo
+
+Clusters: un **hub** + dos spokes, **`bajos`** (dev) y **`prod`**. Probado con OpenShift 4.21 y
+OpenShift GitOps 1.22. Se usan contexts de `oc` llamados `hub`, `bajos` y `prod`:
+
+```bash
+oc login <api-hub>   -u admin && oc config rename-context $(oc config current-context) hub
+oc login <api-bajos> -u admin && oc config rename-context $(oc config current-context) bajos
+oc login <api-prod>  -u admin && oc config rename-context $(oc config current-context) prod
+```
+
+### 1. OpenShift GitOps en los 3 clusters
+
+Desde OperatorHub ("Red Hat OpenShift GitOps") o con:
+
+```bash
+for c in hub bajos prod; do oc --context $c apply -f - <<'EOF'
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: openshift-gitops-operator
+  namespace: openshift-operators
+spec:
+  channel: latest
+  name: openshift-gitops-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+EOF
+done
+```
+
+Crea la instancia por defecto `openshift-gitops` en el namespace `openshift-gitops` de cada cluster.
+PULL usa la de los spokes; PUSH e HYBRID usan la del hub (e HYBRID también la de los spokes).
+
+### 2. Registrar los spokes en el hub (sólo PUSH e HYBRID)
+
+Los nombres **tienen que ser `bajos` y `prod`**: los ApplicationSets usan `destination.name`.
+
+```bash
+HUB=$(oc --context hub -n openshift-gitops get route openshift-gitops-server -o jsonpath='{.spec.host}')
+PASS=$(oc --context hub -n openshift-gitops get secret openshift-gitops-cluster -o jsonpath='{.data.admin\.password}' | base64 -d)
+argocd login $HUB --username admin --password "$PASS" --insecure --grpc-web
+argocd cluster add bajos --name bajos -y
+argocd cluster add prod  --name prod  -y
+argocd cluster list
+```
+
+`argocd cluster add` crea en cada spoke el ServiceAccount `argocd-manager` (kube-system) y guarda
+su token en un Secret del hub. No borrar ese ServiceAccount.
+
+### 3. Apuntar a tus clusters
+
+Si cambian los clusters (sandboxes nuevos), actualizar el `server` en estos 4 archivos:
+
+```
+push/clusters/{bajos,prod}/cluster-config.json
+hybrid/clusters/{bajos,prod}/cluster-config.json
+```
+
+Commit + push a `main`: Argo CD lee **siempre de GitHub**, no de tu copia local.
+
+### 4. Levantar los modelos
+
+```bash
+oc --context hub   apply -k push/bootstrap          # PUSH
+oc --context bajos apply -k pull/bootstrap/bajos    # PULL
+oc --context prod  apply -k pull/bootstrap/prod     # PULL
+oc --context hub   apply -k hybrid/bootstrap        # HYBRID
+```
+
+Son independientes: se puede levantar sólo uno. Es lo único que se aplica a mano; el resto
+lo hace Argo CD desde Git (app-of-apps).
+
+### 5. Verificar
+
+```bash
+./demo/status.sh        # modelo, pods, HTTP y entorno de las 6 rutas
+./demo/refresh.sh       # forzar a Argo CD a releer Git (no esperar ~3 min)
+```
+
+```
+CLUSTER MODELO  PODS   HTTP      ENTORNO
+bajos   push    1/1    200       Desarrollo - OpenShift
+bajos   pull    1/1    200       Desarrollo - OpenShift
+bajos   hybrid  1/1    200       Desarrollo - OpenShift
+prod    push    2/2    200       Produccion - OpenShift
+...
+```
+
+### 6. Bajar todo
+
+```bash
+./demo/reset.sh         # borra todo lo de la demo en los 3 clusters (no toca openshift-gitops)
+```
 
 ---
 
