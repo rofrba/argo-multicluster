@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: applications-push
+  name: applications-pull
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "-10"
@@ -10,10 +10,10 @@ spec:
     namespace: 'openshift-gitops'
     server: 'https://kubernetes.default.svc'
   source:
-    path: push/proyectos
+    path: pull/prod/proyectos
     repoURL: 'https://github.com/rofrba/argo-multicluster.git'
     targetRevision: main
-  project: openshift-gitops
+  project: openshift-gitops-pull
   syncPolicy:
     automated:
       selfHeal: true

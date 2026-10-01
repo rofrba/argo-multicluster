@@ -1,10 +1,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: openshift-gitops-app
+  name: openshift-gitops-bajos-app-push
   namespace: openshift-gitops
-  annotations:
-    argocd.argoproj.io/sync-wave: "-5"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -12,10 +10,10 @@ spec:
     namespace: 'openshift-gitops'
     server: 'https://kubernetes.default.svc'
   source:
-    path: 'proyectos/openshift-gitops'
-    repoURL: 'https://gitlab.com/smg-code/poc-gitops-redhat/gitops.git'
+    path: 'push/bajos/proyectos/openshift-gitops'
+    repoURL: 'https://github.com/rofrba/argo-multicluster.git'
     targetRevision: main
-  project: 'openshift-gitops'
+  project: 'openshift-gitops-push'
   syncPolicy:
     automated:
       selfHeal: true

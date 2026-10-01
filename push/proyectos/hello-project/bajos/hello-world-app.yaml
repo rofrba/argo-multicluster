@@ -1,0 +1,26 @@
+apiVersion: v1
+items:
+- apiVersion: argoproj.io/v1alpha1
+  kind: Application
+  metadata:
+    name: bajos-hello-world-app-push
+    namespace: openshift-gitops 
+    annotations:
+      argocd.argoproj.io/sync-wave: "1" 
+  spec:
+    destination:
+      namespace: hello-project-bajos-push
+      server: https://kubernetes.default.svc
+    project: hello-project-bajos-push
+    source:
+      path: manifests/hello-world/overlays/bajos
+      repoURL: https://github.com/rofrba/argo-multicluster.git
+      targetRevision: main
+    syncPolicy:
+      automated:
+        selfHeal: true
+      syncOptions:
+      - Validate=false
+      - ApplyOutOfSyncOnly=true
+kind: List
+metadata: {}

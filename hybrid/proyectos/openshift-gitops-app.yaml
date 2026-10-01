@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: permisos
+  name: openshift-gitops-app-hybrid
   namespace: openshift-gitops
   annotations:
-    argocd.argoproj.io/sync-wave: "-5" 
+    argocd.argoproj.io/sync-wave: "-5"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -12,10 +12,10 @@ spec:
     namespace: 'openshift-gitops'
     server: 'https://kubernetes.default.svc'
   source:
-    path: 'permisos'
-    repoURL: 'https://gitlab.com/smg-code/poc-gitops-redhat/gitops.git'
+    path: 'hybrid/proyectos/openshift-gitops'
+    repoURL: 'https://github.com/rofrba/argo-multicluster.git'
     targetRevision: main
-  project: 'openshift-gitops'
+  project: 'openshift-gitops-hybrid'
   syncPolicy:
     automated:
       selfHeal: true

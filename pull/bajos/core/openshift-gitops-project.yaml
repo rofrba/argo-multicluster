@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: openshift-gitops-push
+  name: openshift-gitops-pull
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "-10"

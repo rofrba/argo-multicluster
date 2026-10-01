@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: multi-cluster-push
+  namespace: openshift-gitops
+  annotations:
+    argocd.argopj.io/sync-wave: "0" # Que se cree primero
+spec:
+  description: "Proyecto del Hub para la automatización. Gestiona los ApplicationSet y los wrappers."
+  sourceRepos:
+  - '*'
+  # Este proyecto necesita permiso para crear Applications
+  # que apunten a cualquier clúster remoto (los Spokes).
+  destinations:
+  - namespace: '*'
+    server: '*'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'

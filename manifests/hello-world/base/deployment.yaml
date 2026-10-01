@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+  labels:
+    app: hello-world
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: web
+        image: nginx:alpine
+        ports:
+        - containerPort: 8080
+          name: http
+        volumeMounts:
+        - name: html-volume
+          mountPath: /usr/share/nginx/html/index.html.template
+          subPath: index.html.template
+        # En OpenShift es una buena práctica (o requerimiento de SCC) ejecutar en puertos superiores al 1024
+        # y configurar el puerto predeterminado de NGINX
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            sed -i 's/80;/8080;/g' /etc/nginx/conf.d/default.conf && \
+            exec /usr/share/nginx/entrypoint.d/20-envsubst-on-templates.sh nginx -g 'daemon off;'
+      volumes:
+      - name: html-volume
+        configMap:
+          name: html-template

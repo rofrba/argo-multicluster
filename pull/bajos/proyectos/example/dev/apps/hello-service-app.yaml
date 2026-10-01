@@ -1,0 +1,26 @@
+apiVersion: v1
+items:
+- apiVersion: argoproj.io/v1alpha1
+  kind: Application
+  metadata:
+    name: dev-hello-service-app
+    namespace: openshift-gitops 
+    annotations:
+      argocd.argoproj.io/sync-wave: "1" 
+  spec:
+    destination:
+      namespace: dev-example
+      server: https://kubernetes.default.svc
+    project: dev-example
+    source:
+      path: manifests/hello-world/overlays/dev
+      repoURL: https://github.com/rofrba/argo-multicluster.git
+      targetRevision: main
+    syncPolicy:
+      automated:
+        selfHeal: true
+      syncOptions:
+      - Validate=false
+      - ApplyOutOfSyncOnly=true
+kind: List
+metadata: {}

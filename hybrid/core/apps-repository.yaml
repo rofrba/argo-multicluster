@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: repository-gitops-push
+  name: repository-gitops-hybrid
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "-10"

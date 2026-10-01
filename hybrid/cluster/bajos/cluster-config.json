@@ -1,0 +1,4 @@
+{
+  "name": "prod",
+  "server": "https://api.ocp-rosa-dev.b6t7.p1.openshiftapps.com:6443"
+}

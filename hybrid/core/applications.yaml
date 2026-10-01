@@ -1,24 +1,26 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: repositorios
+  name: applications-hybrid
   namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
 spec:
   destination:
     namespace: 'openshift-gitops'
     server: 'https://kubernetes.default.svc'
   source:
-    path: repositorios
-    repoURL: 'https://gitlab.com/smg-code/poc-gitops-redhat/gitops.git'
+    path: hybrid/proyectos
+    repoURL: 'https://github.com/rofrba/argo-multicluster.git'
     targetRevision: main
-    directory:
-      recurse: true
   project: openshift-gitops
   syncPolicy:
     automated:
       selfHeal: true
-      prune: true
+      prune: false # cambiar por true en produccion
       allowEmpty: true
     syncOptions:
       - Validate=false
+      - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
+      
