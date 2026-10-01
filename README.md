@@ -6,6 +6,8 @@ Demo de la charla **"Argo CD Multicluster: Push vs Pull strategies for Scaling Y
 La **misma app** (`manifests/hello-world`) se despliega con los 3 modelos en los mismos clusters.
 La página muestra el modelo (color) y el entorno, así se ve en vivo quién desplegó qué.
 
+👉 **Guion paso a paso de la demo: [demo/DEMO.md](demo/DEMO.md)** (scripts `reset.sh`, `status.sh`, `refresh.sh`).
+
 | Modelo | Quién aplica los workloads | Credenciales de los spokes | Si el hub se cae… |
 |---|---|---|---|
 | **PUSH** 🟧 | Argo CD del **hub**, contra la API remota | En el hub | Nadie sincroniza |
