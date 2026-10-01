@@ -20,7 +20,7 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
-            sed "s|VALUE_MI_ENTORNO|${MI_ENTORNO}|g" /tmp/template/index.html.template > /var/www/html/index.html && \
+            sed "s|VALUE_MI_ENTORNO|${MI_ENTORNO}|g" /tmp/template/index.html > /var/www/html/index.html && \
             exec container-entrypoint run-httpd
         ports:
         - containerPort: 8080
