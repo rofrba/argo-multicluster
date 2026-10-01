@@ -11,4 +11,4 @@ spec:
   - name: 8080-tcp
     port: 8080
   selector:
-    deployment: hello-world
+    app: hello-world
