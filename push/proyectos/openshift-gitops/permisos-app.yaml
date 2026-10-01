@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: permisos
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5" 
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: 'openshift-gitops'
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: 'permisos'
+    repoURL: 'https://gitlab.com/smg-code/poc-gitops-redhat/gitops.git'
+    targetRevision: main
+  project: 'openshift-gitops'
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+      allowEmpty: true
+    syncOptions:
+      - Validate=false
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true

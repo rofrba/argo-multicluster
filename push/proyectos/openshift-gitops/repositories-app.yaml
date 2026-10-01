@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: repositorios
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: 'openshift-gitops'
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: repositorios
+    repoURL: 'https://gitlab.com/smg-code/poc-gitops-redhat/gitops.git'
+    targetRevision: main
+    directory:
+      recurse: true
+  project: openshift-gitops
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+      allowEmpty: true
+    syncOptions:
+      - Validate=false
+      - ApplyOutOfSyncOnly=true
