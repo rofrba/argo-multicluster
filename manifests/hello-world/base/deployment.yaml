@@ -16,21 +16,16 @@ spec:
     spec:
       containers:
       - name: web
-        image: nginx:alpine
+        image: registry.redhat.io/rhel10/httpd-24:1790750455
         ports:
         - containerPort: 8080
           name: http
         volumeMounts:
         - name: html-volume
-          mountPath: /usr/share/nginx/html/index.html.template
-          subPath: index.html.template
+          mountPath: /var/www/html/index.html
+          subPath: index.html
         # En OpenShift es una buena práctica (o requerimiento de SCC) ejecutar en puertos superiores al 1024
         # y configurar el puerto predeterminado de NGINX
-        command: ["/bin/sh", "-c"]
-        args:
-          - |
-            sed -i 's/80;/8080;/g' /etc/nginx/conf.d/default.conf && \
-            exec /usr/share/nginx/entrypoint.d/20-envsubst-on-templates.sh nginx -g 'daemon off;'
       volumes:
       - name: html-volume
         configMap:
