@@ -8,7 +8,7 @@ spec:
   project: pull-bootstrap
   source:
     repoURL: https://github.com/rofrba/argo-multicluster.git
-    targetRevision: kcd-argentina
+    targetRevision: main
     path: pull/clusters/CHANGEME   # lo completa el overlay de cada spoke
   destination:
     server: https://kubernetes.default.svc

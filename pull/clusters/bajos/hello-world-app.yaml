@@ -11,7 +11,7 @@ spec:
   project: hello-world-pull
   source:
     repoURL: https://github.com/rofrba/argo-multicluster.git
-    targetRevision: kcd-argentina
+    targetRevision: main
     # Kustomize: base + envs/bajos + components/pull
     path: manifests/hello-world/deploy/pull/bajos
   destination:

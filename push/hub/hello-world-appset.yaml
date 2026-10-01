@@ -10,7 +10,7 @@ spec:
   # Agregar un cluster = commitear un cluster-config.json (y registrarlo en el hub)
   - git:
       repoURL: https://github.com/rofrba/argo-multicluster.git
-      revision: kcd-argentina
+      revision: main
       files:
       - path: push/clusters/*/cluster-config.json
   template:
@@ -22,7 +22,7 @@ spec:
       project: push-workloads
       source:
         repoURL: https://github.com/rofrba/argo-multicluster.git
-        targetRevision: kcd-argentina
+        targetRevision: main
         # Kustomize: base + envs/<entorno> + components/push
         path: 'manifests/hello-world/deploy/push/{{.path.basename}}'
       destination:

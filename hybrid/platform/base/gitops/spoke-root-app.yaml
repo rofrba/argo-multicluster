@@ -14,7 +14,7 @@ spec:
   project: hybrid-spoke-root
   source:
     repoURL: https://github.com/rofrba/argo-multicluster.git
-    targetRevision: kcd-argentina
+    targetRevision: main
     path: hybrid/clusters/CHANGEME/apps   # lo completa el overlay
   destination:
     server: https://kubernetes.default.svc   # in-cluster: el spoke se sincroniza solo

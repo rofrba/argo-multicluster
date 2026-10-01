@@ -8,7 +8,7 @@ spec:
   project: hybrid-bootstrap
   source:
     repoURL: https://github.com/rofrba/argo-multicluster.git
-    targetRevision: kcd-argentina
+    targetRevision: main
     path: hybrid/hub
   destination:
     server: https://kubernetes.default.svc

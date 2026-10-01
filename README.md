@@ -179,7 +179,3 @@ Bugs que tenía el layout anterior (los corrige este):
 - Typo `argocd.argopj.io/sync-wave` → la anotación se ignoraba.
 - El "push" en realidad creaba Applications **dentro** del spoke (el Argo local hacía el deploy), o sea ya era híbrido.
 - El hybrid de `prod` terminaba también en `bajos` (Application `prod-hello-world-app-hybrid` y namespace `prod-example-hybrid` en el cluster de dev).
-
-> **Antes de mergear a `main`**: los manifiestos apuntan a la branch `kcd-argentina` para probar.
-> Volver a `main` con:
-> `grep -rlE "(targetRevision|revision): kcd-argentina" push pull hybrid | xargs sed -i -E 's/(targetRevision|revision): kcd-argentina/\1: main/'`

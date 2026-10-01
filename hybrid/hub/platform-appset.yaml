@@ -11,7 +11,7 @@ spec:
   # (+ registrarlo en el hub). El hub lo "habilita" y desde ahí el spoke es autónomo.
   - git:
       repoURL: https://github.com/rofrba/argo-multicluster.git
-      revision: kcd-argentina
+      revision: main
       files:
       - path: hybrid/clusters/*/cluster-config.json
   template:
@@ -24,7 +24,7 @@ spec:
       project: hybrid-platform
       source:
         repoURL: https://github.com/rofrba/argo-multicluster.git
-        targetRevision: kcd-argentina
+        targetRevision: main
         # Kustomize: platform/base + overlay por cluster (cuotas distintas por entorno)
         path: 'hybrid/platform/overlays/{{.path.basename}}'
       destination:

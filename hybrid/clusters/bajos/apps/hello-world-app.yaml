@@ -14,7 +14,7 @@ spec:
   project: hello-world-hybrid
   source:
     repoURL: https://github.com/rofrba/argo-multicluster.git
-    targetRevision: kcd-argentina
+    targetRevision: main
     # Kustomize: base + envs/bajos + components/hybrid
     path: manifests/hello-world/deploy/hybrid/bajos
   destination:
