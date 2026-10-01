@@ -3,6 +3,8 @@ kind: AppProject
 metadata:
   name: hybrid-spoke-root
   namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"   # los proyectos antes que la root app
 spec:
   description: "HYBRID - root app local del spoke: sólo puede crear Applications"
   sourceRepos:

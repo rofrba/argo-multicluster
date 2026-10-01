@@ -3,6 +3,8 @@ kind: AppProject
 metadata:
   name: hello-world-hybrid
   namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"   # los proyectos antes que la root app
 spec:
   description: >-
     HYBRID - Execution plane. El equipo despliega lo que quiera en SU namespace,
