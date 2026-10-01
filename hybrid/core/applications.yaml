@@ -13,7 +13,7 @@ spec:
     path: hybrid/proyectos
     repoURL: 'https://github.com/rofrba/argo-multicluster.git'
     targetRevision: main
-  project: openshift-gitops
+  project: openshift-gitops-hybrid
   syncPolicy:
     automated:
       selfHeal: true
