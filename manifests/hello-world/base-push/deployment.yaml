@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-push
+  labels:
+    app: hello-world-push
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world-push
+  template:
+    metadata:
+      labels:
+        app: hello-world-push
+    spec:
+      containers:
+      - name: hello-world-push
+        image: registry.redhat.io/rhel10/httpd-24:1790750455
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            sed "s|VALUE_MI_ENTORNO|${MI_ENTORNO}|g" /tmp/template/index.html > /var/www/html/index.html && \
+            exec container-entrypoint run-httpd
+        ports:
+        - containerPort: 8080
+          name: http
+        volumeMounts:
+        - name: html-template-volume
+          mountPath: /tmp/template
+        - name: www-html-volume
+          mountPath: /var/www/html
+        # En OpenShift es una buena práctica (o requerimiento de SCC) ejecutar en puertos superiores al 1024
+        # y configurar el puerto predeterminado de NGINX
+      volumes:
+      - name: html-template-volume
+        configMap:
+          name: html-template-push
+      - name: www-html-volume
+        emptyDir: {}
