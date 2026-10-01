@@ -23,7 +23,7 @@ data:
         <div class="card">
             <h1>Despliegue en OpenShift</h1>
             <p>El valor de la variable de entorno actual es:</p>
-            <div class="badge">${MI_ENTORNO}</div>
+            <div class="badge">VALUE_MI_ENTORNO</div>
         </div>
     </body>
     </html>

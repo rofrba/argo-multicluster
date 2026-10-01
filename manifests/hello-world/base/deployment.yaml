@@ -17,6 +17,13 @@ spec:
       containers:
       - name: hello-world
         image: registry.redhat.io/rhel10/httpd-24:1790750455
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            # 1. Reemplazamos la marca de agua 'VALUE_MI_ENTORNO' por la variable $MI_ENTORNO
+            sed "s|VALUE_MI_ENTORNO|${MI_ENTORNO}|g" /tmp/template/index.html.template > /var/www/html/index.html && \
+            # 2. Ejecutamos el punto de entrada oficial de la imagen Red Hat
+            exec container-entrypoint run-httpd
         ports:
         - containerPort: 8080
           name: http
