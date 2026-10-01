@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: pull-bootstrap
+spec:
+  description: "PULL - raíz local del spoke. Todo es in-cluster: nadie de afuera tiene credenciales."
+  sourceRepos:
+  - https://github.com/rofrba/argo-multicluster.git
+  destinations:
+  - namespace: openshift-gitops
+    server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+  - group: argoproj.io
+    kind: AppProject
+  - group: argoproj.io
+    kind: Application

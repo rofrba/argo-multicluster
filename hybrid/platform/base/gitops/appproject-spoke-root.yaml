@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: hybrid-spoke-root
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"   # los proyectos antes que la root app
+spec:
+  description: "HYBRID - root app local del spoke: sólo puede crear Applications"
+  sourceRepos:
+  - https://github.com/rofrba/argo-multicluster.git
+  destinations:
+  - namespace: openshift-gitops
+    server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+  - group: argoproj.io
+    kind: Application

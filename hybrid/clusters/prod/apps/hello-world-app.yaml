@@ -1,0 +1,26 @@
+# Execution plane: este Application lo crea y lo reconcilia el Argo CD LOCAL del spoke prod.
+# Si el hub se cae, este cluster sigue sincronizando desde Git.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world-hybrid
+  namespace: openshift-gitops
+  labels:
+    kcd.demo/model: hybrid
+    kcd.demo/plane: execution
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: hello-world-hybrid
+  source:
+    repoURL: https://github.com/rofrba/argo-multicluster.git
+    targetRevision: kcd-argentina
+    # Kustomize: base + envs/prod + components/hybrid
+    path: manifests/hello-world/deploy/hybrid/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kcd-hybrid-prod   # ya existe: lo creó el hub con sus guardrails
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

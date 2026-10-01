@@ -1,0 +1,5 @@
+{
+  "name": "bajos",
+  "server": "https://api.ocp.zcnm2.sandbox871.opentlc.com:6443",
+  "namespace": "kcd-push-bajos"
+}

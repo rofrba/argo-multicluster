@@ -1,0 +1,5 @@
+{
+  "name": "prod",
+  "server": "https://api.ocp.xv5zf.sandbox1997.opentlc.com:6443",
+  "namespace": "kcd-push-prod"
+}

@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: hello-world-pull
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  description: "PULL - equipo hello-world en el cluster prod"
+  sourceRepos:
+  - https://github.com/rofrba/argo-multicluster.git
+  destinations:
+  - namespace: kcd-pull-prod
+    server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+  - group: ''
+    kind: Namespace

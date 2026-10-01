@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: platform-hybrid
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  # Agregar un cluster = commitear hybrid/clusters/<nombre>/cluster-config.json
+  # (+ registrarlo en el hub). El hub lo "habilita" y desde ahí el spoke es autónomo.
+  - git:
+      repoURL: https://github.com/rofrba/argo-multicluster.git
+      revision: kcd-argentina
+      files:
+      - path: hybrid/clusters/*/cluster-config.json
+  template:
+    metadata:
+      name: 'platform-{{.path.basename}}'
+      labels:
+        kcd.demo/model: hybrid
+        kcd.demo/plane: management
+    spec:
+      project: hybrid-platform
+      source:
+        repoURL: https://github.com/rofrba/argo-multicluster.git
+        targetRevision: kcd-argentina
+        # Kustomize: platform/base + overlay por cluster (cuotas distintas por entorno)
+        path: 'hybrid/platform/overlays/{{.path.basename}}'
+      destination:
+        name: '{{.name}}'
+        namespace: openshift-gitops
+      syncPolicy:
+        automated:
+          selfHeal: true   # si alguien borra la cuota en el spoke, el hub la repone
+          prune: true

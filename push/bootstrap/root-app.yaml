@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: push-root
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: push-bootstrap
+  source:
+    repoURL: https://github.com/rofrba/argo-multicluster.git
+    targetRevision: kcd-argentina
+    path: push/hub
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openshift-gitops
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

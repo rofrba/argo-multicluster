@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: hybrid-platform
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  description: >-
+    HYBRID - Management plane. El hub gobierna la PLATAFORMA de cada spoke
+    (namespaces, cuotas, red, AppProjects, bootstrap) pero NO puede desplegar workloads:
+    no hay Deployment/Service/Route en la whitelist. Eso es trabajo del Argo CD local.
+  sourceRepos:
+  - https://github.com/rofrba/argo-multicluster.git
+  destinations:
+  - namespace: openshift-gitops
+    server: '*'
+  - namespace: 'kcd-hybrid-*'
+    server: '*'
+  clusterResourceWhitelist:
+  - group: ""
+    kind: Namespace
+  namespaceResourceWhitelist:
+  - group: ""
+    kind: ResourceQuota
+  - group: ""
+    kind: LimitRange
+  - group: networking.k8s.io
+    kind: NetworkPolicy
+  - group: argoproj.io
+    kind: AppProject
+  - group: argoproj.io
+    kind: Application
